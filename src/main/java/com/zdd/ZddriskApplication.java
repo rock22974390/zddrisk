@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.zdd.risk")
+@MapperScan("com.zdd.risk.dao")
 public class ZddriskApplication {
 
 	public static void main(String[] args) {
