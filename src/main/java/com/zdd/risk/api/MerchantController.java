@@ -6,12 +6,17 @@ import com.gxb.sdk.des.exception.GxbApiException;
 import com.gxb.sdk.des.model.dto.DataExchangeDetailDto;
 import com.gxb.sdk.des.model.dto.DataExchangeDto;
 import com.gxb.sdk.des.model.enums.DataExchangeStatusEnum;
+import com.zdd.risk.bean.Certification;
+import com.zdd.risk.bean.CertificationExample;
+import com.zdd.risk.dao.ICertificationDAO;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +39,9 @@ public class MerchantController {
 
     private com.gxb.sdk.des.client.MerchantClient client;
 
+    @Autowired
+    private ICertificationDAO iCertificationDAO;
+
     public void init() {
         //1、初始化
         //创建client，入参为私钥、主链的账号
@@ -55,7 +63,9 @@ public class MerchantController {
         log.info("检查借款信息接口入参 param= "+param);
         JSONObject result = new JSONObject();
         JSONObject  params = JSONObject.parseObject(param);
-        return checkLoanInfo2(params.getString("name"),params.getString("idcard"),params.getString("mobile"));
+        result = checkLoanInfo2(params.getString("name"),params.getString("idcard"),params.getString("mobile"));
+
+        return result;
     }
 
     @ApiOperation("检查借款信息接口")
@@ -105,49 +115,116 @@ public class MerchantController {
     }
     private JSONObject third(JSONObject param) {
         JSONObject result = null;
-        DataExchangeDetailDto detailDto = callGXB(PRODUCT_ID_2,param);
-        if(detailDto!=null ) {
-            String  detailDtoData = detailDto.getData();
-            JSONObject  params = JSONObject.parseObject(detailDtoData);
-            Map<String,Object> paramMap = (Map<String,Object>)params;
-            boolean flag = (boolean) paramMap.get("success");
-            String msg = (String) paramMap.get("msg");
-            if(!flag){
+        String detailDtoData=null;
+        boolean insertflag =false;
+        String idcard= param.getString("idcard");
+        String mobile= param.getString("mobile");
+
+        CertificationExample example = new CertificationExample();
+        CertificationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdcardEqualTo(idcard);
+        criteria.andMobileEqualTo(mobile);
+        criteria.andCertificationtypeEqualTo("2");
+        criteria.andFlagEqualTo(0);
+        List<Certification> certificationList= iCertificationDAO.selectByExampleWithBLOBs(example);
+
+        if(certificationList != null && certificationList.size()>0) {
+            detailDtoData = certificationList.get(0).getCertificationresult();
+
+        }else {
+            DataExchangeDetailDto detailDto = callGXB(PRODUCT_ID_2, param);
+            if (detailDto != null) {
+                detailDtoData = detailDto.getData();
+                insertflag=true;
+            }
+        }
+        boolean flag =false;
+        if(!StringUtils.isEmpty(detailDtoData)) {
+            JSONObject detailJson = JSONObject.parseObject(detailDtoData);
+            Map<String, Object> paramMap = (Map<String, Object>) detailJson;
+            flag = (boolean) paramMap.get("success");
+            if (!flag) {
                 Map para = new HashMap();
-                para.put("level",LEVEL_E);
-                para.put("recommend","高风险客户建议拒绝");
+                para.put("level", LEVEL_E);
+                para.put("recommend", "高风险客户建议拒绝");
                 result = new JSONObject(para);
             }
-        }else{
+        }else {
             Map para = new HashMap();
-            para.put("level",LEVEL_D);
-            para.put("recommend","第三方数据接口故障,建议人工");
+            para.put("level", LEVEL_D);
+            para.put("recommend", "第三方数据接口故障,建议人工");
             result = new JSONObject(para);
         }
+        if(insertflag) {
+            Certification record = new Certification();
+            record.setIdcard(idcard);
+            record.setMobile(mobile);
+            record.setCertificationtype("2");
+            record.setCertificationitem(JSONObject.toJSONString(param));
+            record.setCertificationresult(String.valueOf(flag));
+            record.setCertificationlimit(new Date());
+            record.setFlag(0);
+            record.setCreattime(new Date());
+            iCertificationDAO.insert(record);
+        }
+
        return result;
 
     }
 
     private JSONObject netleng(JSONObject param) {
         JSONObject result = null;
-        DataExchangeDetailDto detailDto = callGXB(PRODUCT_ID_5,param);
-        if(detailDto!=null ) {
-            String  detailDtoData = detailDto.getData();
+        String detailDtoData=null;
+        boolean insertflag =false;
+        String idcard= param.getString("idcard");
+        String mobile= param.getString("mobile");
+
+        CertificationExample example = new CertificationExample();
+        CertificationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdcardEqualTo(idcard);
+        criteria.andMobileEqualTo(mobile);
+        criteria.andCertificationtypeEqualTo("5");
+        criteria.andFlagEqualTo(0);
+        List<Certification> certificationList= iCertificationDAO.selectByExampleWithBLOBs(example);
+
+        if(certificationList != null && certificationList.size()>0) {
+            detailDtoData = certificationList.get(0).getCertificationresult();
+
+        }else {
+            DataExchangeDetailDto detailDto = callGXB(PRODUCT_ID_5, param);
+            if (detailDto != null) {
+                detailDtoData = detailDto.getData();
+                insertflag=true;
+            }
+        }
+        Integer duration =0;
+        if(detailDtoData!=null ) {
             JSONObject  params = JSONObject.parseObject(detailDtoData);
             Map<String,Object> paramMap = (Map<String,Object>)params;
-            Integer duration = (Integer) paramMap.get("duration");
-            String msg = (String) paramMap.get("msg");
-            if(duration<2){
+            duration = (Integer) paramMap.get("duration");
+            if(duration < 2) {
                 Map para = new HashMap();
-                para.put("level",LEVEL_E);
-                para.put("recommend","高风险客户建议拒绝");
+                para.put("level", LEVEL_E);
+                para.put("recommend", "高风险客户建议拒绝");
                 result = new JSONObject(para);
             }
-        }else{
+        }else {
             Map para = new HashMap();
-            para.put("level",LEVEL_D);
-            para.put("recommend","第三方数据接口故障,建议人工");
+            para.put("level", LEVEL_D);
+            para.put("recommend", "第三方数据接口故障,建议人工");
             result = new JSONObject(para);
+        }
+        if(insertflag) {
+            Certification record = new Certification();
+            record.setIdcard(idcard);
+            record.setMobile(mobile);
+            record.setCertificationtype("5");
+            record.setCertificationitem(JSONObject.toJSONString(param));
+            record.setCertificationresult(String.valueOf(duration));
+            record.setCertificationlimit(new Date());
+            record.setFlag(0);
+            record.setCreattime(new Date());
+            iCertificationDAO.insert(record);
         }
         return result;
     }
