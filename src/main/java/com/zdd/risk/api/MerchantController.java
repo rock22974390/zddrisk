@@ -98,7 +98,7 @@ public class MerchantController {
             return new JSONObject(reMap);
         }
 
-        result = netleng(params);
+        result = netlength(params);
         if(result!=null) {
             reMap.put("data",result);
             log.info("检查借款信息接口出参 reMap= "+new JSONObject(reMap).toString());
@@ -113,31 +113,10 @@ public class MerchantController {
         log.info("检查借款信息接口出参 reMap= "+new JSONObject(reMap).toString());
         return new JSONObject(reMap);
     }
+
     private JSONObject third(JSONObject param) {
         JSONObject result = null;
-        String detailDtoData=null;
-        boolean insertflag =false;
-        String idcard= param.getString("idcard");
-        String mobile= param.getString("mobile");
-
-        CertificationExample example = new CertificationExample();
-        CertificationExample.Criteria criteria = example.createCriteria();
-        criteria.andIdcardEqualTo(idcard);
-        criteria.andMobileEqualTo(mobile);
-        criteria.andCertificationtypeEqualTo("2");
-        criteria.andFlagEqualTo(0);
-        List<Certification> certificationList= iCertificationDAO.selectByExampleWithBLOBs(example);
-
-        if(certificationList != null && certificationList.size()>0) {
-            detailDtoData = certificationList.get(0).getCertificationresult();
-
-        }else {
-            DataExchangeDetailDto detailDto = callGXB(PRODUCT_ID_2, param);
-            if (detailDto != null) {
-                detailDtoData = detailDto.getData();
-                insertflag=true;
-            }
-        }
+        String detailDtoData = getCertificationInfo(param,PRODUCT_ID_2);
         boolean flag =false;
         if(!StringUtils.isEmpty(detailDtoData)) {
             JSONObject detailJson = JSONObject.parseObject(detailDtoData);
@@ -155,48 +134,13 @@ public class MerchantController {
             para.put("recommend", "第三方数据接口故障,建议人工");
             result = new JSONObject(para);
         }
-        if(insertflag) {
-            Certification record = new Certification();
-            record.setIdcard(idcard);
-            record.setMobile(mobile);
-            record.setCertificationtype("2");
-            record.setCertificationitem(JSONObject.toJSONString(param));
-            record.setCertificationresult(String.valueOf(flag));
-            record.setCertificationlimit(new Date());
-            record.setFlag(0);
-            record.setCreattime(new Date());
-            iCertificationDAO.insert(record);
-        }
-
        return result;
 
     }
 
-    private JSONObject netleng(JSONObject param) {
+    private JSONObject netlength(JSONObject param) {
         JSONObject result = null;
-        String detailDtoData=null;
-        boolean insertflag =false;
-        String idcard= param.getString("idcard");
-        String mobile= param.getString("mobile");
-
-        CertificationExample example = new CertificationExample();
-        CertificationExample.Criteria criteria = example.createCriteria();
-        criteria.andIdcardEqualTo(idcard);
-        criteria.andMobileEqualTo(mobile);
-        criteria.andCertificationtypeEqualTo("5");
-        criteria.andFlagEqualTo(0);
-        List<Certification> certificationList= iCertificationDAO.selectByExampleWithBLOBs(example);
-
-        if(certificationList != null && certificationList.size()>0) {
-            detailDtoData = certificationList.get(0).getCertificationresult();
-
-        }else {
-            DataExchangeDetailDto detailDto = callGXB(PRODUCT_ID_5, param);
-            if (detailDto != null) {
-                detailDtoData = detailDto.getData();
-                insertflag=true;
-            }
-        }
+        String detailDtoData = getCertificationInfo(param,PRODUCT_ID_5);
         Integer duration =0;
         if(detailDtoData!=null ) {
             JSONObject  params = JSONObject.parseObject(detailDtoData);
@@ -214,28 +158,51 @@ public class MerchantController {
             para.put("recommend", "第三方数据接口故障,建议人工");
             result = new JSONObject(para);
         }
-        if(insertflag) {
-            Certification record = new Certification();
-            record.setIdcard(idcard);
-            record.setMobile(mobile);
-            record.setCertificationtype("5");
-            record.setCertificationitem(JSONObject.toJSONString(param));
-            record.setCertificationresult(String.valueOf(duration));
-            record.setCertificationlimit(new Date());
-            record.setFlag(0);
-            record.setCreattime(new Date());
-            iCertificationDAO.insert(record);
-        }
+
         return result;
     }
 
+    private String getCertificationInfo(JSONObject param,int productId) {
+        String detailDtoData=null;
+        String idcard= param.getString("idcard");
+        String mobile= param.getString("mobile");
+
+        CertificationExample example = new CertificationExample();
+        CertificationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdcardEqualTo(idcard);
+        criteria.andMobileEqualTo(mobile);
+        criteria.andCertificationtypeEqualTo(String.valueOf(productId));
+        criteria.andFlagEqualTo(0);
+        List<Certification> certificationList= iCertificationDAO.selectByExampleWithBLOBs(example);
+
+        if(certificationList != null && certificationList.size()>0) {
+            detailDtoData = certificationList.get(0).getCertificationresult();
+
+        }else {
+            DataExchangeDetailDto detailDto = callGXB(productId, param);
+            if (detailDto != null) {
+                detailDtoData = detailDto.getData();
+                Certification record = new Certification();
+                record.setIdcard(idcard);
+                record.setMobile(mobile);
+                record.setCertificationtype(String.valueOf(productId));
+                record.setCertificationitem(JSONObject.toJSONString(param));
+                record.setCertificationresult(detailDtoData);
+                record.setCertificationlimit(new Date());
+                record.setFlag(0);
+                record.setCreattime(new Date());
+                iCertificationDAO.insert(record);
+            }
+        }
+
+        return detailDtoData;
+    }
     private DataExchangeDetailDto callGXB(Integer productId, JSONObject params) {
 
         long l1 = System.currentTimeMillis();
         List<DataExchangeDetailDto> resultlist = null;
         DataExchangeDetailDto detailDto=null;
         try {
-//            JSONObject param = doParam();
             //创建交易
             String requestId = client.createDataExchangeRequest(productId, params);
             //获取结果
