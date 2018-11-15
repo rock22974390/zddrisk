@@ -80,6 +80,17 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.3</version>
         </dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.servanter/netsfjson-support-spring -->
+		<dependency>
+			<groupId>com.github.servanter</groupId>
+			<artifactId>netsfjson-support-spring</artifactId>
+			<version>1.0.0</version>
+		</dependency>
     </dependencies>
 
 	<build>
