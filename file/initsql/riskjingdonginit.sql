@@ -132,3 +132,19 @@ CREATE TABLE `risk_certificationUserInfo`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+--==================2018-11-14修改表结构SQL======================================
+ALTER table risk_applyamount ADD COLUMN  applyid varchar(20) COMMENT "进件编号";
+ALTER table risk_certificationuserinfo ADD COLUMN  applyid varchar(20) COMMENT "进件编号";
+ALTER table risk_accredit ADD COLUMN  type varchar(2) COMMENT "授权类型";
+ALTER table risk_applyamount ADD COLUMN  UPDATE_TIME datetime COMMENT "更新时间";
+ALTER table risk_certificationuserinfo ADD COLUMN  UPDATE_TIME datetime COMMENT "更新时间";
+ALTER table risk_accredit ADD COLUMN  UPDATE_TIME  datetime COMMENT "更新时间";
+ALTER table risk_approveresult ADD COLUMN  UPDATE_TIME datetime COMMENT "更新时间";
+ALTER table risk_certification ADD COLUMN  UPDATE_TIME  datetime COMMENT "更新时间";
+--==================2018-11-15修改表结构SQL======================================
+alter TABLE risk_applyamount modify  COLUMN bizno VARCHAR(20);
+alter TABLE risk_approveresult modify  COLUMN bizno VARCHAR (20);
+
