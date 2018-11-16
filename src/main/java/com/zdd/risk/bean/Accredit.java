@@ -10,7 +10,7 @@ public class Accredit {
      *
      * @mbg.generated Fri Nov 16 15:56:59 CST 2018
      */
-    private Integer id ;
+    private Integer id;
 
     /**
      *
