@@ -107,7 +107,7 @@ public class JingdongController {
 
         //insert DB
         Accredit record = jsonObject.toJavaObject(Accredit.class);
-        record.setCreatetime(new Date());
+        record.setCreateTime(new Date());
         log.info(JSONObject.toJSONString(record));
         accreditDAO.insert(record);
 
@@ -148,7 +148,7 @@ public class JingdongController {
 
         //insert DB
         ApproveResult record = jsonObject.toJavaObject(ApproveResult.class);
-        record.setCreatetime(new Date());
+        record.setCreateTime(new Date());
         log.info(JSONObject.toJSONString(record));
         int a = approveResultDAO.insert(record);
 
@@ -183,7 +183,7 @@ public class JingdongController {
 
         ApproveResultExample example = new ApproveResultExample();
         ApproveResultExample.Criteria criteria = example.createCriteria();
-        criteria.andUseridEqualTo(jsonObject.getString("userid"));
+        criteria.andUserIdEqualTo(jsonObject.getString("userid"));
         //通过userID查询申请额度信息
         List<ApproveResult> approveResute1 = approveResultDAO.selectByExample(example);
 
@@ -249,7 +249,7 @@ public class JingdongController {
         //select DB
         ApplyAmountExample example = new ApplyAmountExample();
         ApplyAmountExample.Criteria criteria = example.createCriteria();
-        criteria.andUseridEqualTo(jsonObject.getString("uid"));
+        criteria.andUserIdEqualTo(jsonObject.getString("uid"));
         //通过userID查询申请额度信息
         List<ApplyAmount> applyamountlist = applyAmountDAO.selectByExample(example);
 
@@ -283,7 +283,7 @@ public class JingdongController {
 
         CertificationUserInfoExample example = new CertificationUserInfoExample();
         CertificationUserInfoExample.Criteria criteria = example.createCriteria();
-        criteria.andUseridEqualTo(jsonObject.getString("uid"));
+        criteria.andUserIdEqualTo(jsonObject.getString("uid"));
         //通过userID查询用户基本信息数据
         List<CertificationUserInfo> certificationuserinfolist = certificationUserInfoDAO.selectByExample(example);
 
