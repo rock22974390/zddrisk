@@ -1,6 +1,7 @@
 package com.zdd.risk.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
@@ -9,6 +10,8 @@ import java.security.KeyFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+
+@Component
 public class RSAUtils {
 	 /** *//** 
      * 加密算法RSA 
