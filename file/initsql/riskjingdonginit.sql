@@ -152,6 +152,15 @@ ALTER TABLE risk_applyamount ADD COLUMN realName VARCHAR (10) COMMENT "姓名", 
 ALTER TABLE risk_certificationuserinfo ADD COLUMN idCard VARCHAR (20) COMMENT "身份证号",ADD COLUMN bankName VARCHAR (20) COMMENT "所属银行" ;
 
 
+ALTER TABLE risk_applyamount CHANGE UPDATE_TIME updateTime  datetime  COMMENT "更新时间";
+ALTER TABLE risk_certificationuserinfo CHANGE UPDATE_TIME updateTime  datetime  COMMENT "更新时间";
+ALTER TABLE risk_accredit CHANGE UPDATE_TIME updateTime  datetime  COMMENT "更新时间";
+ALTER TABLE risk_approveresult CHANGE UPDATE_TIME updateTime  datetime  COMMENT "更新时间";
+ALTER TABLE risk_certification CHANGE UPDATE_TIME updateTime  datetime  COMMENT "更新时间";
+ALTER TABLE risk_applyamount CHANGE applyid applyId  VARCHAR(20)  COMMENT "进件编号";
+ALTER TABLE risk_certificationuserinfo CHANGE applyid applyId  VARCHAR(20)  COMMENT "进件编号";
+ALTER TABLE risk_applyamount CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
+ALTER TABLE risk_approveresult CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
 
 
 
