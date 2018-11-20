@@ -169,28 +169,28 @@ public class MerchantController {
 
         CertificationExample example = new CertificationExample();
         CertificationExample.Criteria criteria = example.createCriteria();
-        criteria.andIdcardEqualTo(idcard);
+        criteria.andIdCardEqualTo(idcard);
         criteria.andMobileEqualTo(mobile);
-        criteria.andCertificationtypeEqualTo(String.valueOf(productId));
+        criteria.andCertificationTypeEqualTo(String.valueOf(productId));
         criteria.andFlagEqualTo(0);
         List<Certification> certificationList= iCertificationDAO.selectByExampleWithBLOBs(example);
 
         if(certificationList != null && certificationList.size()>0) {
-            detailDtoData = certificationList.get(0).getCertificationresult();
+            detailDtoData = certificationList.get(0).getCertificationResult();
 
         }else {
             DataExchangeDetailDto detailDto = callGXB(productId, param);
             if (detailDto != null) {
                 detailDtoData = detailDto.getData();
                 Certification record = new Certification();
-                record.setIdcard(idcard);
+                record.setIdCard(idcard);
                 record.setMobile(mobile);
-                record.setCertificationtype(String.valueOf(productId));
-                record.setCertificationitem(JSONObject.toJSONString(param));
-                record.setCertificationresult(detailDtoData);
-                record.setCertificationlimit(new Date());
+                record.setCertificationType(String.valueOf(productId));
+                record.setCertificationItem(JSONObject.toJSONString(param));
+                record.setCertificationResult(detailDtoData);
+                record.setCertificationLimit(new Date());
                 record.setFlag(0);
-                record.setCreattime(new Date());
+                record.setCreatTime(new Date());
                 iCertificationDAO.insert(record);
             }
         }
