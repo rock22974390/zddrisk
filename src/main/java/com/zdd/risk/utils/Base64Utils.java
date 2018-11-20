@@ -1,11 +1,12 @@
 package com.zdd.risk.utils;
 
+import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
 
-
+@Component
 public class Base64Utils {
 	
 	
