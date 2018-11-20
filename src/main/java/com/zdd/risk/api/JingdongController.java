@@ -1,6 +1,5 @@
 package com.zdd.risk.api;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zdd.risk.bean.*;
 import com.zdd.risk.dao.IAccreditDAO;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Array;
 import java.security.PublicKey;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,7 +172,7 @@ public class JingdongController {
 
         //insert DB
         ApproveResult record = params.toJavaObject(ApproveResult.class);
-        record.setCreatetime(new Date());
+        record.setCreateTime(new Date());
         log.info(JSONObject.toJSONString(record));
         int a = approveResultDAO.insert(record);
 
@@ -209,7 +207,7 @@ public class JingdongController {
 
         ApproveResultExample example = new ApproveResultExample();
         ApproveResultExample.Criteria criteria = example.createCriteria();
-        criteria.andUseridEqualTo(jsonObject.getString("userid"));
+        criteria.andUserIdEqualTo(jsonObject.getString("userid"));
         //通过userID查询申请额度信息
         List<ApproveResult> approveResute1 = approveResultDAO.selectByExample(example);
 
@@ -272,7 +270,7 @@ public class JingdongController {
         //select DB
         ApplyAmountExample example = new ApplyAmountExample();
         ApplyAmountExample.Criteria criteria = example.createCriteria();
-        criteria.andUseridEqualTo(jsonObject.getString("uid"));
+        criteria.andUserIdEqualTo(jsonObject.getString("uid"));
         //通过userID查询申请额度信息
         List<ApplyAmount> applyamountlist = applyAmountDAO.selectByExample(example);
 
@@ -339,7 +337,7 @@ System.out.println("==========================================="+params.toJSONSt
 
         CertificationUserInfoExample example = new CertificationUserInfoExample();
         CertificationUserInfoExample.Criteria criteria = example.createCriteria();
-        criteria.andUseridEqualTo(jsonObject.getString("uid"));
+        criteria.andUserIdEqualTo(jsonObject.getString("uid"));
         //通过userID查询用户基本信息数据
         List<CertificationUserInfo> certificationuserinfolist = certificationUserInfoDAO.selectByExample(example);
 
@@ -408,7 +406,7 @@ System.out.println("==========================================="+params.toJSONSt
         System.out.println("===============================");
         //insert DB
         Accredit record = params.toJavaObject(Accredit.class);
-        record.setCreatetime(new Date());
+        record.setCreateTime(new Date());
         log.info(JSONObject.toJSONString(record));
         int a = accreditDAO.insert(record);
 
