@@ -132,7 +132,6 @@ CREATE TABLE `risk_certificationUserInfo`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
 --==================2018-11-14修改表结构SQL======================================
 ALTER table risk_applyamount ADD COLUMN  applyid varchar(20) COMMENT "进件编号";
 ALTER table risk_certificationuserinfo ADD COLUMN  applyid varchar(20) COMMENT "进件编号";
@@ -161,11 +160,4 @@ ALTER TABLE risk_applyamount CHANGE applyid applyId  VARCHAR(20)  COMMENT "进�
 ALTER TABLE risk_certificationuserinfo CHANGE applyid applyId  VARCHAR(20)  COMMENT "进件编号";
 ALTER TABLE risk_applyamount CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
 ALTER TABLE risk_approveresult CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
-
-
-
-
-
-
-
 
