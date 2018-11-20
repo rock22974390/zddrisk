@@ -147,6 +147,9 @@ alter TABLE risk_applyamount modify  COLUMN bizno VARCHAR(20);
 alter TABLE risk_approveresult modify  COLUMN bizno VARCHAR (20);
 
 
+--=====================================2018-11-20增加银行信息字段=====================================-
+ALTER TABLE risk_applyamount ADD COLUMN realName VARCHAR (10) COMMENT "姓名", ADD COLUMN idCard VARCHAR (20) COMMENT "身份证号", ADD COLUMN bankCard VARCHAR (20) COMMENT "银行卡号" ,ADD COLUMN bankName VARCHAR (20) COMMENT "所属银行", ADD COLUMN bankMobile VARCHAR (20) COMMENT "银行预留手机号";
+ALTER TABLE risk_certificationuserinfo ADD COLUMN idCard VARCHAR (20) COMMENT "身份证号",ADD COLUMN bankName VARCHAR (20) COMMENT "所属银行" ;
 
 
 
