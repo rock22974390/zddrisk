@@ -13,15 +13,15 @@ public class OrderSequence extends Thread {
 	 private static int orderNum = 0;
     private static String date ;
 	      
-	    public static void main(String[] args) throws InterruptedException {  
-//	        for (int i = 0; i < 10000; i++) {
-//	            System.out.println(TestOrder.getOrderNo());
-//	            Thread.sleep(1000);
-//	        }
-
-
-	            System.out.println(OrderSequence.getOrderNo1());
-	    }  
+//	    public static void main(String[] args) throws InterruptedException {
+////	        for (int i = 0; i < 10000; i++) {
+////	            System.out.println(TestOrder.getOrderNo());
+////	            Thread.sleep(1000);
+////	        }
+//
+//
+//	            System.out.println(OrderSequence.getOrderNo1());
+//	    }
 	  
 	    /** 
 	     * 生成订单编号 
@@ -51,18 +51,11 @@ public class OrderSequence extends Thread {
 	 */
 	public static synchronized long getOrderNo1() {
 
-
 		long str =System.currentTimeMillis();
-
-
-		System.out.println(str);
 		orderNum ++;
-
 		long orderNo=str * 100000;
-
 		orderNo += orderNum ;
-
-		System.out.println(orderNo);
+		System.out.println("随机生成的bizno为："+orderNo);
 		return orderNo ;
 	}
 

@@ -23,8 +23,10 @@ import org.apache.http.util.EntityUtils;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -40,6 +42,7 @@ public class HttpUtils {
 	private static PoolingHttpClientConnectionManager connMgr;
 	private static RequestConfig requestConfig;
 	private static final int MAX_TIMEOUT = 20000;
+	private static CloseableHttpClient httpClient;
 
 	static {
 		// 设置连接池
@@ -58,6 +61,14 @@ public class HttpUtils {
 		// 在提交请求之前 测试连接是否可用
 		configBuilder.setStaleConnectionCheckEnabled(true);
 		requestConfig = configBuilder.build();
+	}
+
+	static {
+		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+		cm.setMaxTotal(100);
+		cm.setDefaultMaxPerRoute(20);
+		cm.setDefaultMaxPerRoute(50);
+		httpClient = HttpClients.custom().setConnectionManager(cm).build();
 	}
 
 	/**
@@ -318,6 +329,53 @@ public class HttpUtils {
 			}
 		}
 		return httpStr;
+	}
+
+
+
+	/**
+	 * 发送 POST 请求（HTTP），JSON形式
+	 *
+	 * @param apiUrl
+	 * @param json
+	 *            json对象
+	 * @return
+	 */
+
+	public static String post(String url, String jsonString) {
+		CloseableHttpResponse response = null;
+		BufferedReader in = null;
+		String result = "";
+		try {
+			HttpPost httpPost = new HttpPost(url);
+			RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30000).setConnectionRequestTimeout(30000).setSocketTimeout(30000).build();
+			httpPost.setConfig(requestConfig);
+			httpPost.setConfig(requestConfig);
+			httpPost.addHeader("Content-type", "application/json; charset=utf-8");
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setEntity(new StringEntity(jsonString, Charset.forName("UTF-8")));
+			response = httpClient.execute(httpPost);
+			in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			StringBuffer sb = new StringBuffer("");
+			String line = "";
+			String NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			result = sb.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != response) {
+					response.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 
 	/**
