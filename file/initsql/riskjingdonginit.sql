@@ -164,3 +164,12 @@ ALTER TABLE risk_approveresult CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单�
 --=============================2018-11-21修改表类型=======================
 alter TABLE risk_certificationuserinfo modify  COLUMN idCardValidDate VARCHAR(30);
 
+
+alter TABLE risk_certificationuserinfo modify  COLUMN regOs mediumtext COMMENT " 注册设备[系统,版本,手机型号]";
+ALTER TABLE risk_accredit CHANGE orderId taskId   varchar(20)  COMMENT "第三方授权编号";
+
+
+
+
+
+
