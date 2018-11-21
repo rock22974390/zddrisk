@@ -177,6 +177,7 @@ alter TABLE risk_certificationuserinfo modify  COLUMN latitude varchar(100) COMM
 alter TABLE risk_certificationuserinfo modify  COLUMN gpsAddress varchar(200) COMMENT " 最后更新gps 地址";
 alter TABLE risk_certificationuserinfo modify  COLUMN regFrom varchar(50) COMMENT " 进件引流渠道(建议0为自然流量，其他渠道请提供对应码表)";
 alter TABLE risk_certificationuserinfo modify  COLUMN bankName varchar(50) COMMENT " 所属银行";
+ALTER table risk_certificationuserinfo ADD COLUMN  productId VARCHAR(3) COMMENT "产品形态";
 
 
 
