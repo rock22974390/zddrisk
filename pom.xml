@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.zdd</groupId>
-	<artifactId>zddrisk</artifactId>
+	<artifactId>jdapprove</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>zddrisk</name>
+	<name>jdapprove</name>
 	<description>project for ZDD RISK</description>
 
 	<parent>
