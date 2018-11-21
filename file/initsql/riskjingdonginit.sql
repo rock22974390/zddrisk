@@ -162,5 +162,24 @@ ALTER TABLE risk_applyamount CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号
 ALTER TABLE risk_approveresult CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
 
 --=============================2018-11-21修改表类型=======================
-alter TABLE risk_certificationuserinfo modify  COLUMN idCardValidDate VARCHAR(30);
+alter TABLE risk_certificationuserinfo modify  COLUMN idCardValidDate VARCHAR(30)  COMMENT " 身份证有效日期";
+
+alter TABLE risk_certificationuserinfo modify  COLUMN regOs mediumtext COMMENT " 注册设备[系统,版本,手机型号]";
+ALTER TABLE risk_accredit CHANGE orderId taskId   varchar(20)  COMMENT "第三方授权编号";
+
+alter TABLE risk_accredit modify  COLUMN accreditInfo text COMMENT " 用户授权信息";
+alter TABLE risk_applyamount modify  COLUMN bankName varchar(50) COMMENT " 所属银行";
+alter TABLE risk_certificationuserinfo modify  COLUMN realName varchar(50) COMMENT " 姓名";
+alter TABLE risk_certificationuserinfo modify  COLUMN sosContactName varchar(50) COMMENT " 紧急联系人姓名";
+alter TABLE risk_certificationuserinfo modify  COLUMN sosContactName1 varchar(50) COMMENT " 紧急联系人姓名1";
+alter TABLE risk_certificationuserinfo modify  COLUMN longitude varchar(100) COMMENT " 最后更新gps 经度";
+alter TABLE risk_certificationuserinfo modify  COLUMN latitude varchar(100) COMMENT " 最后更新gps 纬度";
+alter TABLE risk_certificationuserinfo modify  COLUMN gpsAddress varchar(200) COMMENT " 最后更新gps 地址";
+alter TABLE risk_certificationuserinfo modify  COLUMN regFrom varchar(50) COMMENT " 进件引流渠道(建议0为自然流量，其他渠道请提供对应码表)";
+alter TABLE risk_certificationuserinfo modify  COLUMN bankName varchar(50) COMMENT " 所属银行";
+ALTER table risk_certificationuserinfo ADD COLUMN  productId VARCHAR(3) COMMENT "产品形态";
+
+
+
+
 
