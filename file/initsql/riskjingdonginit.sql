@@ -146,7 +146,7 @@ alter TABLE risk_applyamount modify  COLUMN bizno VARCHAR(20);
 alter TABLE risk_approveresult modify  COLUMN bizno VARCHAR (20);
 
 
---=====================================2018-11-20增加银行信息字段=====================================-
+--=====================================2018-11-20增加银行信息字段=====================================
 ALTER TABLE risk_applyamount ADD COLUMN realName VARCHAR (10) COMMENT "姓名", ADD COLUMN idCard VARCHAR (20) COMMENT "身份证号", ADD COLUMN bankCard VARCHAR (20) COMMENT "银行卡号" ,ADD COLUMN bankName VARCHAR (20) COMMENT "所属银行", ADD COLUMN bankMobile VARCHAR (20) COMMENT "银行预留手机号";
 ALTER TABLE risk_certificationuserinfo ADD COLUMN idCard VARCHAR (20) COMMENT "身份证号",ADD COLUMN bankName VARCHAR (20) COMMENT "所属银行" ;
 
@@ -160,4 +160,7 @@ ALTER TABLE risk_applyamount CHANGE applyid applyId  VARCHAR(20)  COMMENT "进�
 ALTER TABLE risk_certificationuserinfo CHANGE applyid applyId  VARCHAR(20)  COMMENT "进件编号";
 ALTER TABLE risk_applyamount CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
 ALTER TABLE risk_approveresult CHANGE bizno bizNo  VARCHAR(20)  COMMENT "订单号";
+
+--=============================2018-11-21修改表类型=======================
+alter TABLE risk_certificationuserinfo modify  COLUMN idCardValidDate VARCHAR(30);
 
