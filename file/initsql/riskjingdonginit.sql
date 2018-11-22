@@ -183,5 +183,6 @@ alter TABLE risk_certificationuserinfo modify  COLUMN regFrom varchar(5) COMMENT
 
 alter TABLE risk_accredit modify  COLUMN taskId varchar(50)  COMMENT "第三方授权编号";
 
+alter TABLE risk_applyamount modify  COLUMN modelNo varchar(100)  COMMENT "规格/型号（租赁场景）";
 
 
