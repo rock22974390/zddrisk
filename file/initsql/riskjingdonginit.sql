@@ -181,6 +181,8 @@ alter TABLE risk_certificationuserinfo modify  COLUMN latitude varchar(20) COMME
 alter TABLE risk_certificationuserinfo modify  COLUMN regFrom varchar(5) COMMENT " 进件引流渠道(建议0为自然流量，其他渠道请提供对应码表)";
 
 
+alter TABLE risk_accredit modify  COLUMN taskId varchar(50)  COMMENT "第三方授权编号";
 
+alter TABLE risk_applyamount modify  COLUMN modelNo varchar(100)  COMMENT "规格/型号（租赁场景）";
 
 
